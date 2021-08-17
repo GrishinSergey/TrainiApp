@@ -11,4 +11,7 @@ abstract class ExerciseRepetitionDao {
     @Query("select * from ExerciseRepetitionEntity where trainingExerciseId = :trainingExerciseId")
     abstract fun getExerciseRepetitionsByFlow(trainingExerciseId: Long): Flow<List<ExerciseRepetitionEntity>>
 
+    @Query("select * from ExerciseRepetitionEntity where trainingExerciseId in (:ids)")
+    abstract fun getExerciseRepetitionsByFlow(ids: List<Long>): Flow<List<ExerciseRepetitionEntity>>
+
 }

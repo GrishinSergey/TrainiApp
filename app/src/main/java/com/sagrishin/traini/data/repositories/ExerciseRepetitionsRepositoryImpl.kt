@@ -17,4 +17,10 @@ class ExerciseRepetitionsRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getExerciseRepetitionsBy(ids: List<Long>): Flow<List<DomainExerciseRepetition>> {
+        return trainingRepetitionDao.getExerciseRepetitionsByFlow(ids).map {
+            it.map { DomainExerciseRepetition(it.id, it.trainingExerciseId, it.weight, it.repetitionsCount) }
+        }
+    }
+
 }

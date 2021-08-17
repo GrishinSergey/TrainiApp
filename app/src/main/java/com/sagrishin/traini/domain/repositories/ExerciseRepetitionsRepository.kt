@@ -7,4 +7,6 @@ interface ExerciseRepetitionsRepository {
 
     fun getExerciseRepetitionsBy(trainingExerciseId: Long): Flow<List<DomainExerciseRepetition>>
 
+    fun getExerciseRepetitionsBy(ids: List<Long>): Flow<List<DomainExerciseRepetition>>
+
 }
