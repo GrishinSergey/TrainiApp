@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_trainings"
+    app:startDestination="@id/trainingsListFragment">
+
+    <fragment
+        android:id="@+id/trainingsListFragment"
+        android:name="com.sagrishin.traini.presentation.trainings.list.TrainingsListFragment"
+        android:label="TrainingsListFragment"
+        tools:layout="@layout/trainings_list_fragment">
+
+        <action
+            android:id="@+id/showSingleTraining"
+            app:destination="@id/singleTrainingActivity" />
+    </fragment>
+
+    <activity
+        android:id="@+id/singleTrainingActivity"
+        android:name="com.sagrishin.traini.presentation.trainings.details.SingleTrainingNavActivity"
+        tools:layout="@layout/activity_navigation">
+
+        <argument
+            android:name="trainingId"
+            app:argType="long" />
+    </activity>
+</navigation>

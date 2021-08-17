@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_single_training"
+    app:startDestination="@id/trainingDetailsFragment">
+
+    <fragment
+        android:id="@+id/trainingDetailsFragment"
+        android:name="com.sagrishin.traini.presentation.trainings.details.TrainingDetailsFragment"
+        android:label="TrainingDetailsFragment"
+        tools:layout="@layout/training_details_fragment">
+
+        <argument
+            android:name="trainingId"
+            app:argType="long" />
+
+        <action
+            android:id="@+id/showExercisesSelector"
+            app:destination="@id/exercisesSelectorDialog" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/exercisesSelectorDialog"
+        android:name="com.sagrishin.traini.presentation.exercises.ExercisesSelectorBottomSheet"
+        android:label="ExercisesSelectorBottomSheet"
+        tools:layout="@layout/exerices_selector_dialog" />
+</navigation>

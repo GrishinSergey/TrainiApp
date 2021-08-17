@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/dateCard"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_margin="2dp"
+        app:cardCornerRadius="4dp"
+        tools:backgroundTint="@color/colorB8D5EF">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/formattedWeekDay"
+            style="@style/TextAppearance.AppCompat.Caption"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            tools:text="Mon, 13" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <View
+        android:id="@+id/notificationIcon"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_gravity="top|end"
+        android:background="@drawable/bg_notification"
+        android:translationZ="2dp" />
+</FrameLayout>

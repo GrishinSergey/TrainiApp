@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Traini</string>
+    <string name="trainings">Trainings</string>
+
+    <string-array name="months">
+        <item>Jan</item>
+        <item>Feb</item>
+        <item>Mar</item>
+        <item>Apr</item>
+        <item>May</item>
+        <item>Jun</item>
+        <item>Jul</item>
+        <item>Aug</item>
+        <item>Sep</item>
+        <item>Oct</item>
+        <item>Nov</item>
+        <item>Dec</item>
+    </string-array>
+
+    <string name="neck">Neck</string>
+    <string name="trapeze">Trapeze</string>
+    <string name="shoulders">Shoulders</string>
+    <string name="chest">Chest</string>
+    <string name="latissimus">Latissimus</string>
+    <string name="biceps">Biceps</string>
+    <string name="triceps">Triceps</string>
+    <string name="forearm">Forearm</string>
+    <string name="press">Press</string>
+    <string name="back">Back</string>
+    <string name="quadriceps">Quadriceps</string>
+    <string name="leg_biceps">Leg Biceps</string>
+    <string name="calves">Calves</string>
+    <string name="week_day_format">%1$s,\n%2$d</string>
+    <string name="repetition_format">%1$d. %2$d kg/%3$d times</string>
+    <string name="add_new_repetition">Add new repetition</string>
+
+</resources>

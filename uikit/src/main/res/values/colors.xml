@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/colorBlue</color>
+    <color name="colorPrimaryDark">@color/colorBlueDark</color>
+    <color name="colorActive">#5C6479</color>
+    <color name="colorAccent">@color/colorBlue</color>
+    <color name="colorTypographyDark">#141824</color>
+    <color name="colorTypographyLight">#EFF1F4</color>
+    <color name="colorTypographyGrey">@color/colorActive</color>
+
+    <color name="colorBlue">#4E95D7</color>
+    <color name="colorBlueDark">#0068A5</color>
+    <color name="colorLightBlue">#F6F8FA</color>
+    <color name="colorGreen">#35C096</color>
+    <color name="colorRed">#B61B1B</color>
+    <color name="colorOrange">#C6621A</color>
+    <color name="colorYellow">#FFB907</color>
+    <color name="colorGray">#CCCCCC</color>
+    <color name="colorLightGray">#CBD2DF</color>
+    <color name="colorError">#E64646</color>
+
+    <color name="colorB8D5EF">#B8D5EF</color>
+</resources>
