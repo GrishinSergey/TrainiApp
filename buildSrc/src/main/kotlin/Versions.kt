@@ -9,7 +9,7 @@ object Versions {
     const val constraintLayoutVersion = "1.1.3"
     const val vectorDrawableVersion = "1.1.0"
     const val lifecycleVersion = "2.3.0-alpha01"
-    const val roomVersion = "2.2.5"
+    const val roomVersion = "2.3.0"
     const val securityVersion = "1.0.0-rc02"
     const val navigationVersion = "2.3.0-alpha05"
     //Third

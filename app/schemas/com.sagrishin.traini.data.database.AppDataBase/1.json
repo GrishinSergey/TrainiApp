@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "127d7471570078ab2465938bf5526b10",
+    "identityHash": "6aca2d7fafeed70d93a0f4f2fec603ca",
     "entities": [
       {
         "tableName": "TrainingEntity",
@@ -58,7 +58,7 @@
       },
       {
         "tableName": "ExerciseEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `description` TEXT NOT NULL, `muscleId` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `description` TEXT NOT NULL, `muscleId` INTEGER NOT NULL, FOREIGN KEY(`muscleId`) REFERENCES `MuscleEntity`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -92,11 +92,23 @@
           "autoGenerate": true
         },
         "indices": [],
-        "foreignKeys": []
+        "foreignKeys": [
+          {
+            "table": "MuscleEntity",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "muscleId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       },
       {
         "tableName": "TrainingExerciseLink",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `trainingId` INTEGER NOT NULL, `exerciseId` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `trainingId` INTEGER NOT NULL, `exerciseId` INTEGER NOT NULL, FOREIGN KEY(`trainingId`) REFERENCES `TrainingEntity`(`id`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`exerciseId`) REFERENCES `ExerciseEntity`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -134,11 +146,34 @@
             "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_TrainingExerciseLink_trainingId_exerciseId` ON `${TABLE_NAME}` (`trainingId`, `exerciseId`)"
           }
         ],
-        "foreignKeys": []
+        "foreignKeys": [
+          {
+            "table": "TrainingEntity",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "trainingId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "ExerciseEntity",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "exerciseId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       },
       {
         "tableName": "ExerciseRepetitionEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `trainingExerciseId` INTEGER NOT NULL, `weight` INTEGER NOT NULL, `repetitionsCount` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `trainingExerciseId` INTEGER NOT NULL, `weight` INTEGER NOT NULL, `repetitionsCount` INTEGER NOT NULL, FOREIGN KEY(`trainingExerciseId`) REFERENCES `TrainingExerciseLink`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -172,13 +207,25 @@
           "autoGenerate": true
         },
         "indices": [],
-        "foreignKeys": []
+        "foreignKeys": [
+          {
+            "table": "TrainingExerciseLink",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "trainingExerciseId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '127d7471570078ab2465938bf5526b10')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6aca2d7fafeed70d93a0f4f2fec603ca')"
     ]
   }
 }

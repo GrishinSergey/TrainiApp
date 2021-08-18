@@ -3,20 +3,18 @@ import org.jetbrains.dokka.gradle.DokkaTask
 plugins {
     id("com.android.library")
     id("kotlin-android")
-    id("kotlin-android-extensions")
+    id("kotlin-parcelize")
     id("kotlin-kapt")
     id("org.jetbrains.dokka")
 }
 
 android {
-    compileSdkVersion(ProjectCompileConfig.compileSdkVersion)
-    buildToolsVersion(ProjectCompileConfig.buildToolsVersion)
+    compileSdk = ProjectCompileConfig.compileSdkVersion
+    buildToolsVersion = ProjectCompileConfig.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion(ProjectCompileConfig.minSdkVersion)
-        targetSdkVersion(ProjectCompileConfig.targetSdkVersion)
-
-        versionCode = ProjectCompileConfig.versionCode
+        minSdk = ProjectCompileConfig.minSdkVersion
+        targetSdk = ProjectCompileConfig.targetSdkVersion
 
         vectorDrawables.useSupportLibrary = true
     }
@@ -36,13 +34,13 @@ android {
     }
 
     compileOptions {
-        coreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        isCoreLibraryDesugaringEnabled = true
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        jvmTarget = JavaVersion.VERSION_11.toString()
     }
 }
 

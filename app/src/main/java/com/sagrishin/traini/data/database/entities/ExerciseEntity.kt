@@ -6,7 +6,17 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.sagrishin.traini.data.database.base.BaseLongIdEntity
 
-@Entity
+@Entity(
+    foreignKeys = [
+        ForeignKey(
+            entity = MuscleEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["muscleId"],
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
+        )
+    ]
+)
 class ExerciseEntity constructor(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
@@ -15,13 +25,6 @@ class ExerciseEntity constructor(
     val name: String,
     @ColumnInfo
     val description: String = "",
-    @ForeignKey(
-        entity = MuscleEntity::class,
-        parentColumns = ["id"],
-        childColumns = ["muscleId"],
-        onDelete = ForeignKey.CASCADE,
-        onUpdate = ForeignKey.CASCADE
-    )
     @ColumnInfo
     val muscleId: Long
 ) : BaseLongIdEntity()

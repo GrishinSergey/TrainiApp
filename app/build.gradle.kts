@@ -3,7 +3,7 @@ import org.jetbrains.dokka.gradle.DokkaTask
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("kotlin-android-extensions")
+    id("kotlin-parcelize")
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("org.jetbrains.dokka")
@@ -12,14 +12,14 @@ plugins {
 }
 
 android {
-    compileSdkVersion(ProjectCompileConfig.compileSdkVersion)
-    buildToolsVersion(ProjectCompileConfig.buildToolsVersion)
+    compileSdk = ProjectCompileConfig.compileSdkVersion
+    buildToolsVersion = ProjectCompileConfig.buildToolsVersion
 
     defaultConfig {
         applicationId = ProjectCompileConfig.applicationId
 
-        minSdkVersion(ProjectCompileConfig.minSdkVersion)
-        targetSdkVersion(ProjectCompileConfig.targetSdkVersion)
+        minSdk = ProjectCompileConfig.minSdkVersion
+        targetSdk = ProjectCompileConfig.targetSdkVersion
 
         versionCode = ProjectCompileConfig.versionCode
 
@@ -32,13 +32,12 @@ android {
 
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = mapOf(
+                arguments += mapOf(
                     "room.schemaLocation" to "$projectDir/schemas",
                     "room.incremental" to "true"
                 )
             }
         }
-
     }
 
     signingConfigs {
@@ -65,13 +64,13 @@ android {
     }
 
     compileOptions {
-        coreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        isCoreLibraryDesugaringEnabled = true
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        jvmTarget = JavaVersion.VERSION_11.toString()
     }
 
 }

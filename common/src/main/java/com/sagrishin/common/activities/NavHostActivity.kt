@@ -8,7 +8,7 @@ import androidx.annotation.NavigationRes
 import androidx.navigation.fragment.NavHostFragment
 import com.sagrishin.common.R
 import com.sagrishin.common.utils.bundleArgs
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 open class NavHostActivity(
     @LayoutRes contentLayoutId: Int? = null

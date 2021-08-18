@@ -6,17 +6,20 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.sagrishin.traini.data.database.base.BaseLongIdEntity
 
-@Entity
+@Entity(
+    foreignKeys = [
+        ForeignKey(
+            entity = TrainingExerciseLink::class,
+            parentColumns = ["id"],
+            childColumns = ["trainingExerciseId"],
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
+        )
+    ]
+)
 class ExerciseRepetitionEntity constructor(
     @PrimaryKey(autoGenerate = true)
     override val id: Long = 0,
-    @ForeignKey(
-        entity = TrainingExerciseLink::class,
-        parentColumns = ["id"],
-        childColumns = ["trainingExerciseId"],
-        onDelete = ForeignKey.CASCADE,
-        onUpdate = ForeignKey.CASCADE
-    )
     @ColumnInfo
     val trainingExerciseId: Long,
     @ColumnInfo
