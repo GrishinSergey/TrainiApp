@@ -6,16 +6,15 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import com.sagrishin.common.livedatas.ActionLiveData
+import com.sagrishin.common.utils.currentDay
 import com.sagrishin.common.utils.currentDayDateTime
 import com.sagrishin.common.viewmodels.BaseViewModel
 import com.sagrishin.traini.domain.usecases.TrainingActionsUseCase
 import com.sagrishin.traini.domain.usecases.TrainingsListUseCase
 import com.sagrishin.traini.presentation.uimodels.UiTrainingsList
 import com.sagrishin.traini.presentation.uimodels.UiWeekSelectableDay
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -26,7 +25,7 @@ class TrainingsListViewModel @Inject constructor(
     private val weekDaysDataSource: WeekDaysDataSource
 ) : BaseViewModel() {
 
-    lateinit var selectedDate: LocalDate
+    var selectedDate: LocalDate = currentDay
 
     val trainingsListLiveData: LiveData<UiTrainingsList>
         get() = _trainingsListLiveData
@@ -39,6 +38,8 @@ class TrainingsListViewModel @Inject constructor(
     val weekDaysLiveData: LiveData<PagingData<UiWeekSelectableDay>> by lazy { _weekDaysFlow.asLiveData() }
     private lateinit var _weekDaysFlow: Flow<PagingData<UiWeekSelectableDay>>
 
+    val selectedDateFlow = MutableStateFlow(selectedDate)
+
     fun initLoadingWeekDays() {
         _weekDaysFlow = Pager(
             config = PagingConfig(pageSize = 7),
@@ -50,21 +51,22 @@ class TrainingsListViewModel @Inject constructor(
             .catch { _errorsLiveData.value = it }
     }
 
-    fun loadTrainingsBy(date: LocalDate) {
+    fun initLoadingTrainings() {
         viewModelScope.launch {
-            useCase.loadTrainingsBy(date)
-                .distinctUntilChanged()
-                .catch { _errorsLiveData.value = it }
-                .collect { _trainingsListLiveData.value = it }
+            selectedDateFlow.collect { date ->
+                selectedDate = date
+
+                useCase.loadTrainingsBy(date)
+                    .distinctUntilChanged()
+                    .catch { _errorsLiveData.setValue(it) }
+                    .collect { _trainingsListLiveData.value = it }
+            }
         }
     }
 
     fun createTrainingAt(createdOn: LocalDateTime) {
-        viewModelScope.launch {
-            val newTrainingId = withContext(Dispatchers.IO + commonErrorsHandler) {
-                trainingActionsUseCase.createTrainingAt(createdOn)
-            }
-            _newTrainingLiveData.value = newTrainingId
+        viewModelScope.launch(commonErrorsHandler) {
+            _newTrainingLiveData.value = trainingActionsUseCase.createTrainingAt(createdOn)
         }
     }
 

@@ -6,6 +6,7 @@ import com.sagrishin.traini.domain.converters.toUiModel
 import com.sagrishin.traini.domain.models.DomainMuscle
 import com.sagrishin.traini.domain.repositories.ExercisesRepository
 import com.sagrishin.traini.domain.repositories.MusclesRepository
+import com.sagrishin.traini.domain.repositories.TrainingExerciseLinksRepository
 import com.sagrishin.traini.domain.repositories.TrainingsRepository
 import com.sagrishin.traini.presentation.uimodels.UiTrainingItem
 import com.sagrishin.traini.presentation.uimodels.UiTrainingsList
@@ -19,6 +20,7 @@ import javax.inject.Inject
 
 class TrainingsListUseCase @Inject constructor(
     private val trainingsRepository: TrainingsRepository,
+    private val trainingExerciseLinksRepository: TrainingExerciseLinksRepository,
     private val exercisesRepository: ExercisesRepository,
     private val musclesRepository: MusclesRepository
 ) {
@@ -29,7 +31,7 @@ class TrainingsListUseCase @Inject constructor(
 
         return trainingsRepository.getTrainingsBetween(start, end).flatMapConcat { trainings ->
             trainings.map { training ->
-                trainingsRepository.getTrainingExerciseLinksBy(training.id).map { link ->
+                trainingExerciseLinksRepository.getTrainingExerciseLinksBy(training.id).map { link ->
                     val exercisesBy = exercisesRepository.getExercisesBy(link.map { it.exerciseId })
                     val musclesBy = musclesRepository.getMusclesBy(exercisesBy.map { it.muscleId }.distinct())
 

@@ -35,14 +35,11 @@ class TrainingsListFragment : BaseFragment(R.layout.trainings_list_fragment, fal
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.selectedDate = currentDay
+        viewModel.initLoadingTrainings()
         viewModel.initLoadingWeekDays()
-        viewModel.loadTrainingsBy(currentDay)
 
         weekDaysAdapter = WeekDaysAdapter { pos ->
-            val selectableWeekDay = weekDaysAdapter[pos]
-            viewModel.selectedDate = selectableWeekDay.weekDay.day
-            viewModel.loadTrainingsBy(selectableWeekDay.weekDay.day)
+            viewModel.selectedDateFlow.value = weekDaysAdapter[pos].weekDay.day
         }
     }
 

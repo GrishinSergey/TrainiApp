@@ -50,6 +50,7 @@ class ExercisesSelectorBottomSheet : BottomSheetDialogFragment() {
         val adapter = adapter(diffUtilCallback = GroupedExercisesDiffUtilCallbackImpl()) {
             GroupedExercisesHolder(it.inflate(R.layout.grouped_exercises_item), commonPool) { exerciseId ->
                 setResultToPrevBackStackEntry(result = OnExerciseSelected(exerciseId))
+                dismiss()
             }
         }
         binding.groupedExercises.adapter = adapter

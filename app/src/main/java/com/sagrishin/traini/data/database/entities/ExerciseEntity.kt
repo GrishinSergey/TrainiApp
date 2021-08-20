@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.sagrishin.traini.data.database.base.BaseLongIdEntity
+import com.sagrishin.traini.data.database.base.BaseEntity
 
 @Entity(
     foreignKeys = [
@@ -20,11 +20,11 @@ import com.sagrishin.traini.data.database.base.BaseLongIdEntity
 class ExerciseEntity constructor(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    override val id: Long = 0,
+    val id: Long = 0,
     @ColumnInfo
     val name: String,
     @ColumnInfo
     val description: String = "",
     @ColumnInfo
     val muscleId: Long
-) : BaseLongIdEntity()
+) : BaseEntity()

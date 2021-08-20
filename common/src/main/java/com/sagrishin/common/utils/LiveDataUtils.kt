@@ -1,8 +1,15 @@
-package com.sagrishin.common.livedatas
+package com.sagrishin.common.utils
 
 import android.os.Looper
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import io.reactivex.Single
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.plusAssign
+import io.reactivex.schedulers.Schedulers
+import java.util.function.BiPredicate
 
 operator fun <T> LiveData<out List<T>>.get(pos: Int): T {
     requireNotNull(value) { "List in LiveData can't be null" }
@@ -39,12 +46,22 @@ fun <K, V> LiveData<out MutableMap<K, V>>.getOrThrow(key: K): V {
     return value!!.getValue(key)
 }
 
+fun <K, V> MutableLiveData<out MutableMap<K, V>>.remove(key: K): V? {
+    requireNotNull(value) { "Map in LiveData can't be null" }
+    return value!!.remove(key)
+}
+
 fun <T> MutableLiveData<T>.refresh(newValue: T? = value) {
     if (Looper.getMainLooper().thread == Thread.currentThread()) {
         value = newValue
     } else {
         postValue(newValue)
     }
+}
+
+fun <T> MutableLiveData<MutableList<T>>.clear() {
+    requireNotNull(value) { "List in LiveData can't be null" }
+    value!!.clear()
 }
 
 operator fun <T> MutableLiveData<MutableList<T>>.plusAssign(list: List<T>) {
@@ -78,14 +95,65 @@ fun <T> LiveData<MutableList<T>>.removeAt(position: Int) {
 }
 
 
+fun <T> LiveData<out List<T>>.distinctUntilChanges(
+    disposable: CompositeDisposable,
+    predicate: BiPredicate<T, T> = BiPredicate { t, u -> t != u }
+): LiveData<out List<T>> {
+    val outputLiveData = MediatorLiveData<List<T>>()
+
+    outputLiveData.addSource(this, object : Observer<List<T>> {
+        private var isFirstTime = true
+
+        override fun onChanged(currentValue: List<T>?) {
+            val previousValue = outputLiveData.value
+
+            disposable += Single.fromCallable {
+                isFirstTime ||
+                        ((previousValue == null) && (currentValue != null)) ||
+                        ((previousValue != null) && (currentValue == null)) ||
+                        ((previousValue != null) && (currentValue != null) && (previousValue to currentValue).map(predicate::test).any())
+            }.subscribeOn(Schedulers.io()).subscribe({
+                if (it) {
+                    outputLiveData.refresh(currentValue)
+                    isFirstTime = false
+                }
+            }, {
+                /// errors here...
+            })
+        }
+    })
+    return outputLiveData
+}
+
+
 fun <T> LiveData<out List<T>>.isEmpty(): Boolean {
     requireNotNull(value) { "List in LiveData can't be null" }
     return value!!.isEmpty()
 }
 
-fun <T> LiveData<out List<T>>.isNotEmpty(): Boolean {
+fun <T> LiveData<out List<T>>.lastOrNull(): T? {
     requireNotNull(value) { "List in LiveData can't be null" }
-    return value!!.isNotEmpty()
+    return value!!.lastOrNull()
+}
+
+fun <T> LiveData<out List<T>>.last(): T {
+    requireNotNull(value) { "List in LiveData can't be null" }
+    return value!!.last()
+}
+
+fun <T> LiveData<out List<T>>.firstOrNull(): T? {
+    requireNotNull(value) { "List in LiveData can't be null" }
+    return value!!.firstOrNull()
+}
+
+fun <T> LiveData<out List<T>>.first(): T {
+    requireNotNull(value) { "List in LiveData can't be null" }
+    return value!!.first()
+}
+
+fun <T> LiveData<out List<T>>.isNotEmpty(): Boolean {
+    /// in this case, value can be null as it is empty state
+    return !value.isNullOrEmpty()
 }
 
 operator fun <T> LiveData<out List<T>>.contains(item: T): Boolean {
@@ -93,6 +161,25 @@ operator fun <T> LiveData<out List<T>>.contains(item: T): Boolean {
     return item in value!!
 }
 
+fun <T> LiveData<out List<T>>.indexOfFirst(predicate: (T) -> Boolean): Int {
+    requireNotNull(value) { "List in LiveData can't be null" }
+    return value!!.indexOfFirst(predicate)
+}
+
+fun <T> LiveData<out List<T>>.indexOfFirstOrNull(predicate: (T) -> Boolean): Int? {
+    requireNotNull(value) { "List in LiveData can't be null" }
+    return value!!.indexOfFirstOrNull(predicate)
+}
+
+fun <T> LiveData<out List<T>>.indexOfLast(predicate: (T) -> Boolean): Int {
+    requireNotNull(value) { "List in LiveData can't be null" }
+    return value!!.indexOfLast(predicate)
+}
+
+fun <T> LiveData<out List<T>>.count(predicate: (T) -> Boolean): Int {
+    requireNotNull(value) { "List in LiveData can't be null" }
+    return value!!.count(predicate)
+}
 
 val <T> LiveData<out List<T>>.lastIndex: Int
     get() {

@@ -1,12 +1,20 @@
 package com.sagrishin.uikit.recyclerview
 
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AdapterListUpdateCallback
+import androidx.recyclerview.widget.AsyncDifferConfig
+import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 
 open class MultiTypeAdapter<T> constructor(
     override val items: MutableList<T> = mutableListOf(),
-    override val diffUtilCallback: DiffUtil.ItemCallback<T>
+    final override val diffUtilCallback: DiffUtil.ItemCallback<T>,
 ) : BaseRecyclerViewAdapter<T>() {
+
+    override val differ: AsyncListDiffer<T> = AsyncListDiffer<T>(
+        AdapterListUpdateCallback(this),
+        AsyncDifferConfig.Builder(diffUtilCallback).build()
+    )
 
     private val viewTypes: MutableMap<HolderPredicate<T>, Int> = mutableMapOf()
     private val holderGenerators: MutableMap<Int, HolderGenerator<T>> = mutableMapOf()

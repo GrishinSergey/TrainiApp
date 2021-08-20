@@ -3,16 +3,16 @@ package com.sagrishin.traini.data.database.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.sagrishin.traini.data.database.base.BaseLongIdEntity
+import com.sagrishin.traini.data.database.base.BaseEntity
 
 @Entity
 data class MuscleEntity constructor(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    override val id: Long = 0,
+    val id: Long = 0,
     @ColumnInfo
     val muscleGroup: MuscleGroup
-) : BaseLongIdEntity() {
+) : BaseEntity() {
 
     enum class MuscleGroup {
         NECK,

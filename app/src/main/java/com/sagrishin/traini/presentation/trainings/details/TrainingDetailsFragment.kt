@@ -8,9 +8,11 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.sagrishin.common.fragments.BaseFragment
+import com.sagrishin.common.navutils.observeResult
 import com.sagrishin.traini.R
 import com.sagrishin.traini.databinding.ExerciseWithRepetitionsItemBinding
 import com.sagrishin.traini.databinding.TrainingDetailsFragmentBinding
+import com.sagrishin.traini.presentation.exercises.OnExerciseSelected
 import com.sagrishin.traini.presentation.trainings.details.TrainingDetailsFragmentDirections.Companion.showExercisesSelector
 import com.sagrishin.uikit.utils.adapter
 import com.sagrishin.uikit.utils.inflate
@@ -50,6 +52,10 @@ class TrainingDetailsFragment : BaseFragment(R.layout.training_details_fragment)
 
         viewModel.trainingLiveData.observe(viewLifecycleOwner) {
 
+        }
+
+        observeResult<OnExerciseSelected>(viewLifecycleOwner) {
+            viewModel.addExerciseTo(args.trainingId, it.exerciseId)
         }
     }
 

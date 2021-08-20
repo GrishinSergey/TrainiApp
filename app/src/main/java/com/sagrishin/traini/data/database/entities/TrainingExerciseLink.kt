@@ -1,7 +1,7 @@
 package com.sagrishin.traini.data.database.entities
 
 import androidx.room.*
-import com.sagrishin.traini.data.database.base.BaseLongIdEntity
+import com.sagrishin.traini.data.database.base.BaseEntity
 
 @Entity(
     indices = [Index(value = ["trainingId", "exerciseId"], unique = true)],
@@ -24,9 +24,9 @@ import com.sagrishin.traini.data.database.base.BaseLongIdEntity
 )
 class TrainingExerciseLink constructor(
     @PrimaryKey(autoGenerate = true)
-    override val id: Long = 0,
+    val id: Long = 0,
     @ColumnInfo
     val trainingId: Long,
     @ColumnInfo
     val exerciseId: Long
-) : BaseLongIdEntity()
+) : BaseEntity()

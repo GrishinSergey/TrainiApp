@@ -1,17 +1,15 @@
 package com.sagrishin.uikit.recyclerview
 
 import androidx.annotation.CallSuper
-import androidx.recyclerview.widget.*
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
 
 abstract class BaseRecyclerViewAdapter<T> : RecyclerView.Adapter<BaseHolder<T>>() {
 
     protected abstract val items: MutableList<T>
     protected abstract val diffUtilCallback: DiffUtil.ItemCallback<T>
-    private val differ = AsyncListDiffer<T>(
-        AdapterListUpdateCallback(this),
-        AsyncDifferConfig.Builder(diffUtilCallback).build()
-    )
-
+    protected abstract val differ: AsyncListDiffer<T>
 
     override fun getItemCount(): Int {
         return items.size
